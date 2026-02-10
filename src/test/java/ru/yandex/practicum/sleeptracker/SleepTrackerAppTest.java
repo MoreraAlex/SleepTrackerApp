@@ -1,5 +1,6 @@
 package ru.yandex.practicum.sleeptracker;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.sleeptracker.analyzers.*;
 import ru.yandex.practicum.sleeptracker.common.Quality;
@@ -30,6 +31,7 @@ class SleepTrackerAppTest {
     );
 
     @Test
+    @DisplayName("Подсчет количества сессий сна")
     void totalSessions() {
         assertEquals(0,
                 new TotalSleepSessions().apply(empty).value(),
@@ -41,6 +43,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Определение минимальной длительности сна")
     void minDuration() {
         assertEquals(0L,
                 new MinSleepDuration().apply(empty).value(),
@@ -52,6 +55,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Определение максимальной длительности сна")
     void maxDuration() {
         assertEquals(0L,
                 new MaxSleepDuration().apply(empty).value(),
@@ -63,6 +67,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Определение средней длительности сна")
     void averageDuration() {
         assertEquals(0L,
                 new AverageSleepDuration().apply(empty).value(),
@@ -81,6 +86,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Подсчёт сессий с плохим качеством сна")
     void badQuality() {
         assertEquals(0L,
                 new BadQualitySessionsCount().apply(empty).value(),
@@ -92,6 +98,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка пустого списка, при ночах без сна")
     void sleeplessNights_empty() {
         assertEquals(0L,
                 new SleeplessNightsCount().apply(empty).value(),
@@ -99,6 +106,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка заполненного списка, без ночей без сна")
     void sleeplessNights_noSleepless() {
         assertEquals(0L,
                 new SleeplessNightsCount().apply(sample).value(),
@@ -106,6 +114,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка заполненного списка, одна ночь без сна")
     void sleeplessNights_oneMissing() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 01:00"), dt("01.10.25 07:00"), Quality.GOOD),
@@ -118,6 +127,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка, что только дневной сон, засчитывается как бессонная ночь")
     void sleeplessNights_dayOnly_firstAfterNoon() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 14:00"), dt("01.10.25 16:00"), Quality.NORMAL)
@@ -129,6 +139,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Накладывающиеся сессии не создают пропуски")
     void sleeplessNights_lateWakeEarlyBed() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 23:00"), dt("02.10.25 05:00"), Quality.NORMAL),
@@ -141,6 +152,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка: Хронотип Сова")
     void chronotype_owl() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 23:30"), dt("02.10.25 10:00"), Quality.GOOD),
@@ -153,6 +165,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка: Хронотип Жаворонок")
     void chronotype_lark() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 21:00"), dt("02.10.25 06:30"), Quality.GOOD),
@@ -165,6 +178,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка: Хронотип Голубь, если большинство сессий нейтральные")
     void chronotype_dove_majority() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 22:30"), dt("02.10.25 07:30"), Quality.GOOD),
@@ -178,6 +192,7 @@ class SleepTrackerAppTest {
     }
 
     @Test
+    @DisplayName("Проверка: Хронотип Голубь, при равном количестве значений")
     void chronotype_tie_fallsToDove() {
         var sessions = List.of(
                 new SleepingSession(dt("01.10.25 23:30"), dt("02.10.25 10:00"), Quality.GOOD),
